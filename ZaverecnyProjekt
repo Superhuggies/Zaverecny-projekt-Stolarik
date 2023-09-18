@@ -1,0 +1,114 @@
+class Pojisteny
+{
+    public string Jmeno { get; set; }
+    public string Prijmeni { get; set; }
+    public int Vek { get; set; }
+    public string TelefonniCislo { get; set; }
+
+    public Pojisteny(string jmeno, string prijmeni, int vek, string telefonniCislo)
+    {
+        Jmeno = jmeno;
+        Prijmeni = prijmeni;
+        Vek = vek;
+        TelefonniCislo = telefonniCislo;
+    }
+
+    public override string ToString()
+    {
+        return $"{Jmeno} {Prijmeni}, Věk: {Vek}, Telefonní číslo: {TelefonniCislo}";
+    }
+}
+
+class Program
+{
+    static List<Pojisteny> seznamPojistenych = new List<Pojisteny>();
+
+    static void Main(string[] args)
+    {
+        while (true)
+        {
+            Console.WriteLine("1. Vytvořit pojištěného");
+            Console.WriteLine("2. Zobrazit seznam všech pojištěných");
+            Console.WriteLine("3. Vyhledat pojištěného podle jména a příjmení");
+            Console.WriteLine("4. Konec programu");
+
+            int volba;
+            if (int.TryParse(Console.ReadLine(), out volba))
+            {
+                switch (volba)
+                {
+                    case 1:
+                        VytvorPojisteneho();
+                        break;
+                    case 2:
+                        ZobrazSeznamPojistenych();
+                        break;
+                    case 3:
+                        VyhledejPojisteneho();
+                        break;
+                    case 4:
+                        return;
+                    default:
+                        Console.WriteLine("Neplatná volba. Zadejte číslo od 1 do 4.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Neplatná volba. Zadejte číslo od 1 do 4.");
+            }
+        }
+    }
+
+    static void VytvorPojisteneho()
+    {
+        Console.WriteLine("Zadejte jméno:");
+        string jmeno = Console.ReadLine();
+        Console.WriteLine("Zadejte příjmení:");
+        string prijmeni = Console.ReadLine();
+        Console.WriteLine("Zadejte věk:");
+        int vek;
+        if (int.TryParse(Console.ReadLine(), out vek))
+        {
+            Console.WriteLine("Zadejte telefonní číslo:");
+            string telefonniCislo = Console.ReadLine();
+
+            Pojisteny novyPojisteny = new Pojisteny(jmeno, prijmeni, vek, telefonniCislo);
+            seznamPojistenych.Add(novyPojisteny);
+            Console.WriteLine("Pojištěný byl vytvořen.");
+        }
+        else
+        {
+            Console.WriteLine("Neplatný věk. Zadejte celé číslo.");
+        }
+    }
+
+    static void ZobrazSeznamPojistenych()
+    {
+        Console.WriteLine("Seznam všech pojištěných:");
+        foreach (var pojisteny in seznamPojistenych)
+        {
+            Console.WriteLine(pojisteny.ToString());
+        }
+    }
+
+    static void VyhledejPojisteneho()
+    {
+        Console.WriteLine("Zadejte jméno pojištěného:");
+        string hledaneJmeno = Console.ReadLine();
+        Console.WriteLine("Zadejte příjmení pojištěného:");
+        string hledanePrijmeni = Console.ReadLine();
+
+        Pojisteny hledanyPojisteny = seznamPojistenych.Find(p => p.Jmeno == hledaneJmeno && p.Prijmeni == hledanePrijmeni);
+
+        if (hledanyPojisteny != null)
+        {
+            Console.WriteLine("Nalezený pojištěný:");
+            Console.WriteLine(hledanyPojisteny.ToString());
+        }
+        else
+        {
+            Console.WriteLine("Pojištěný nebyl nalezen.");
+        }
+    }
+}
